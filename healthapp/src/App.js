@@ -1,14 +1,9 @@
-//import componenets
-import Login from "./Components/Login.js";
-import Register from "./Components/Register.js";
+import { Navigation } from './Routes';
 
-function App() {
-  return (
-    <div className="App">
-      <Login />
-      <Register />
-    </div>
-  );
+export const App = () => {
+    return(
+        <Navigation />
+    );
 }
 
 export default App;
