@@ -1,4 +1,13 @@
+import React, { useState } from 'react';
+
 export const LoginPage = () => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  function handleSubmit(event) {
+    event.preventDefault();
+  }
+
   return (
     <div>
       <head>
@@ -14,13 +23,14 @@ export const LoginPage = () => {
               <h3>Log in here for existing users</h3>
             </div>
             <div class="auth-box">
-              <form class="user" action="/home" method="post">
+              <form class="user" onSubmit={handleSubmit}>
                 <div class="emailp">
                   <input
                     type="email"
                     id="auth-input-group"
                     placeholder="email"
                     name="email"
+                    onChange={e => setEmail(e.target.value)}
                   />
                   <br />
                 </div>
@@ -30,6 +40,7 @@ export const LoginPage = () => {
                     id="auth-input-group"
                     placeholder="password"
                     name="password"
+                    onChange={e => setPassword(e.target.value)}
                   />
                 </div>
                 <input type="submit" class="submit" value="LOGIN" />
