@@ -31,6 +31,10 @@ app.post('/login', (req, res) => {
     })
 })
 
+app.post('/register', (req, res) => {
+    console.log(req.body.firstName, req.body.lastName, req.body.email, req.body.password,)
+})
+
 app.listen(8081, () => {
     console.log("listening on port 8081...");
 })
