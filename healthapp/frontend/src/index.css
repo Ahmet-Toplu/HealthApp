@@ -1,9 +1,9 @@
 body {
   /* background-image: url("/assets/lightgreenbg.jpeg"); */
-  background-color: #04aa6d;
-  background-size: cover;
-  background-repeat: no-repeat;
-  font-family: "IBMPlexSans", Arial, sans-serif;
+  background-color: #04aa6d !important;
+  background-size: cover !important;
+  background-repeat: no-repeat !important;
+  font-family: "IBMPlexSans", Arial, sans-serif !important;
 }
 .container {
   padding-top: 10%;

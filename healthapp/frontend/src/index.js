@@ -1,8 +1,11 @@
 // Import the React and ReactDom libraries
 import React from "react";
-import ReactDOM from "react-dom";
+import ReactDOM from "react-dom/client";
 import "./index.css";
 import { App } from "./App";
+import 'bootstrap/dist/css/bootstrap.min.css';
+import './index.css';
+
 
 // Get a reference to the div with the root ID
 const el = document.getElementById("root");

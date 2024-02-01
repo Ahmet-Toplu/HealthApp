@@ -1,73 +1,76 @@
-export default function Register() {
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import 'bootstrap/dist/css/bootstrap.min.css'; // Ensure Bootstrap CSS is imported
+
+export const RegisterPage = () => {
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  useEffect(() => {
+    document.title = 'Register Page';
+  }, []);
+
+  function handleSubmit(event) {
+    event.preventDefault();
+    axios.post('http://localhost:8081/register', { firstName, lastName, email, password })
+      .then(res => console.log(res))
+      .catch(err => console.log(err));
+  }
+
   return (
-    <div>
-      <head>
-        {/*Link to the CSS files for styling*/}
-        <link rel="stylesheet" href="/stylesheets/register.css" />
-        <title> register page</title>
-      </head>
-      <body>
-        <div class="container">
-          <div class="box">
-            <div class="title">
-              {/*Dynamic title*/}
-              <h1>Welcome to </h1>
-              <h3>Register here for new users</h3>
+    <div className="container mt-5">
+      <div className="card">
+        <div className="card-body">
+          <h1 className="text-center mb-4">Register</h1>
+          <form onSubmit={handleSubmit}>
+            <div className="mb-3">
+              <input
+                type="text"
+                className="form-control"
+                placeholder="First Name"
+                name="firstName"
+                onChange={e => setFirstName(e.target.value)}
+                required
+              />
             </div>
-            <div class="auth-box">
-              {/*registry form split into divs for styling and uses post to save data to db*/}
-              <form class="user" action="/registered" method="post">
-                {/*Input field for the first name*/}
-                <div class="firstName">
-                  <input
-                    type="text"
-                    id="auth-input-group"
-                    placeholder="first name"
-                    name="firstName"
-                    required
-                  />
-                  <br />
-                </div>
-                {/*Input field for the last name*/}
-                <div class="lastName">
-                  <input
-                    type="text"
-                    id="auth-input-group"
-                    placeholder="last name"
-                    name="lastName"
-                    required
-                  />
-                  <br />
-                </div>
-                {/*Input field for the email*/}
-                <div class="emailp">
-                  <input
-                    type="email"
-                    id="auth-input-group"
-                    placeholder="email"
-                    name="email"
-                    required
-                  />
-                  <br />
-                </div>
-                {/*Input field for the password*/}
-                <div class="passp">
-                  <input
-                    type="text"
-                    id="auth-input-group"
-                    placeholder="password"
-                    name="password"
-                    required
-                  />
-                </div>
-                <button type="submit" class="submit">
-                  Submit
-                </button>
-              </form>
+            <div className="mb-3">
+              <input
+                type="text"
+                className="form-control"
+                placeholder="Last Name"
+                name="lastName"
+                onChange={e => setLastName(e.target.value)}
+                required
+              />
             </div>
-          </div>
+            <div className="mb-3">
+              <input
+                type="email"
+                className="form-control"
+                placeholder="Email"
+                name="email"
+                onChange={e => setEmail(e.target.value)}
+                required
+              />
+            </div>
+            <div className="mb-3">
+              <input
+                type="password"
+                className="form-control"
+                placeholder="Password"
+                name="password"
+                onChange={e => setPassword(e.target.value)}
+                required
+              />
+            </div>
+            <button type="submit" className="btn btn-primary w-100">
+              Register
+            </button>
+          </form>
         </div>
-      </body>
+      </div>
     </div>
   );
-}
+};
