@@ -7,6 +7,7 @@ import { HomePage } from "./pages/Home";
 import { NotFoundPage } from "./pages/NotFound";
 import { LoginPage } from "./pages/Login";
 import { RegisterPage } from "./pages/Register";
+import { MapsPage } from "./pages/map";
 
 // Define the Navigation component
 export const Navigation = () => {
@@ -21,6 +22,7 @@ export const Navigation = () => {
                         <Link className="nav-item nav-link d-inline mx-2" to="/">Home</Link>
                         <Link className="nav-item nav-link d-inline mx-2" to="/login">Login</Link>
                         <Link className="nav-item nav-link d-inline mx-2" to="/register">Register</Link>
+                        <Link className="nav-item nav-link d-inline mx-2" to="/map">Map</Link>
                     </div>
                 </div>
             </nav>
@@ -35,6 +37,8 @@ export const Navigation = () => {
 
                 {/* Route for the register page (path: /Register) */}
                 <Route path="/register" element={<RegisterPage />} />
+                
+                <Route path="/map" element={<MapsPage />} />
 
                 {/* 
                   Catch-all Route: 
