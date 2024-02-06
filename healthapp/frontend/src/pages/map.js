@@ -8,7 +8,7 @@ const UserLocationMarker = ({ text }) => <div style={{ color: 'blue' }}>{text}</
 export const MapsPage = () => {
   const [userLocation, setUserLocation] = useState(null);
   const [hospitals, setHospitals] = useState([]);
-  const mapRef = useRef(null);
+  const mapRef = useRef(null)
 
   // Simulate fetching hospitals
   const fetchHospitals = (location) => {
@@ -62,7 +62,7 @@ export const MapsPage = () => {
   return (
     <div style={{ height: '100vh', width: '100%' }}>
       <GoogleMapReact
-        bootstrapURLKeys={{ key: process.env.REACT_APP_GOOGLE_MAPS_API_KEY }}
+        bootstrapURLKeys={{ key:process.env.REACT_APP_GOOGLE_MAPS_API_KEY }}
         center={userLocation || { lat: 59.95, lng: 30.33 }} // Fallback to a default center if userLocation is null
         defaultZoom={14}
         yesIWantToUseGoogleMapApiInternals
