@@ -1,6 +1,9 @@
 // Import necessary components from 'react-router-dom'
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faHome, faBell, faUser, faGears } from '@fortawesome/free-solid-svg-icons';
+
 
 // Import your page components
 import { HomePage } from "./pages/Home";
@@ -15,17 +18,25 @@ export const Navigation = () => {
         // Use BrowserRouter to enable routing in your application
         <Router>
 
-            <nav className="navbar navbar-expand navbar-light bg-light">
-            <   div className="container-fluid justify-content-center">
-                    {/* Centered navigation links */}
+            <nav className="navbar navbar-expand navbar-light bg-light fixed-bottom">
+                <div className="container-fluid justify-content-center">
                     <div className="navbar-nav justify-content-center">
-                        <Link className="nav-item nav-link d-inline mx-2" to="/">Home</Link>
-                        <Link className="nav-item nav-link d-inline mx-2" to="/login">Login</Link>
-                        <Link className="nav-item nav-link d-inline mx-2" to="/register">Register</Link>
-                        <Link className="nav-item nav-link d-inline mx-2" to="/map">Map</Link>
+                    <Link className="nav-item nav-link d-inline mx-2" to="/" title="Home">
+                        <FontAwesomeIcon icon={faHome} size="lg" />
+                    </Link>
+                    <Link className="nav-item nav-link d-inline mx-2" to="/notification" title="Notifications">
+                        <FontAwesomeIcon icon={faBell} size="lg" />
+                    </Link>
+                    <Link className="nav-item nav-link d-inline mx-2" to="/profile" title="Profile">
+                        <FontAwesomeIcon icon={faUser} size="lg" />
+                    </Link>
+                    <Link className="nav-item nav-link d-inline mx-2" to="/settings" title="Settings">
+                        <FontAwesomeIcon icon={faGears} size="lg" />
+                    </Link>
                     </div>
                 </div>
             </nav>
+
 
             {/* Define the Routes for different paths */}
             <Routes>
