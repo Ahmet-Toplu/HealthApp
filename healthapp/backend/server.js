@@ -61,8 +61,6 @@ app.post('/chatbot', async (req, res) => {
             ],
         });
         
-        console.log(response.choices[0].message.content);
-
         // Check if 'choices' exists in the response
         if (response.choices) {
             const result = response.choices[0].message.content.trim();
