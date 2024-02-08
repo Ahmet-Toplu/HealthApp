@@ -52,7 +52,7 @@ app.post('/chatbot', async (req, res) => {
             messages: [
                 {
                     role: 'system',
-                    content: 'You are a Compass Care Health professional.'
+                    content: 'You are a Care Compass Health professional.'
                 },
                 {
                     role: 'user',
