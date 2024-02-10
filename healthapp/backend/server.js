@@ -12,6 +12,21 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
+const questions = [
+    {
+        id: 1,
+        title: "Title 1",
+        description: "Description 1"
+    },
+    {
+        id: 2,
+        title: "Title 2",
+        description: "Description 2"
+    }
+]
+
+let _id = 0;
+
 const openai = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY,
 });
@@ -138,7 +153,45 @@ app.get('/api/hospitals', async (req, res) => {
       console.error(error);
       res.status(500).send('Server error');
     }
-  });
+});
+
+app.get('/api/contact', async (req, res) => {
+    const { lat, lng } = req.query;
+    const radius = 5000;
+    const type = 'hospital';
+    const apiKey = process.env.PLACES_API_KEY;
+    const url = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${lat},${lng}&radius=${radius}&type=${type}&key=${apiKey}`;
+  
+    try {
+        const response = await axios.get(url);
+        for(let i = 0; i < response.data.results.length; i++) {
+            console.log(response.data.results[i].place_id);
+        }
+    } catch (error) {
+      console.error(error);
+      res.status(500).send('Server error');
+    }
+});
+
+app.post('/api/add_questions', async (req, res) => {
+    try {
+        if (_id <= questions[questions.length - 1].id) {
+            _id = questions[questions.length - 1].id + 1;
+        }
+        questions.push({ id: _id, title: req.body.title, description: req.body.description});
+        res.json(questions[questions.length - 1]);
+    } catch (error) {
+        console.error(error);
+    }
+})
+
+app.get('/api/get_questions', async (req, res) => {
+    try {
+        res.json(questions);
+    } catch (error) {
+        res.status(404).send("No Results");
+    }
+})
 
 app.listen(8081, () => {
     console.log("listening on port 8081...");
