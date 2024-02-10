@@ -160,13 +160,17 @@ app.get('/api/contact', async (req, res) => {
     const radius = 5000;
     const type = 'hospital';
     const apiKey = process.env.PLACES_API_KEY;
-    const url = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${lat},${lng}&radius=${radius}&type=${type}&key=${apiKey}`;
+    const nearbySearchUrl = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${lat},${lng}&radius=${radius}&type=${type}&key=${apiKey}`;
   
     try {
-        const response = await axios.get(url);
-        for(let i = 0; i < response.data.results.length; i++) {
-            console.log(response.data.results[i].place_id);
-        }
+        const searchResponse = await axios.get(nearbySearchUrl);
+        const places = searchResponse.data.results;
+        const detailsPromises = places.map(place =>
+            axios.get(`https://maps.googleapis.com/maps/api/place/details/json?place_id=${place.place_id}&fields=name,formatted_phone_number,website&key=${apiKey}`)
+        );
+        const detailsResponses = await Promise.all(detailsPromises);
+        const hospitalDetails = detailsResponses.map(response => response.data.result);
+        console.log(hospitalDetails);
     } catch (error) {
       console.error(error);
       res.status(500).send('Server error');
