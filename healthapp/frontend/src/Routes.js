@@ -1,9 +1,13 @@
 // Import necessary components from 'react-router-dom'
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
-import 'bootstrap/dist/css/bootstrap.min.css';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHome, faBell, faUser, faGears } from '@fortawesome/free-solid-svg-icons';
-
+import "bootstrap/dist/css/bootstrap.min.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faHome,
+  faBell,
+  faUser,
+  faGears,
+} from "@fortawesome/free-solid-svg-icons";
 
 // Import your page components
 import { HomePage } from "./pages/Home";
@@ -12,54 +16,77 @@ import { LoginPage } from "./pages/Login";
 import { RegisterPage } from "./pages/Register";
 import { MapsPage } from "./pages/map";
 import { ChatBotPage } from "./pages/chatbot";
+import { ForumPage } from "./pages/forum";
+import { ContactPage } from "./pages/contact";
+import { Articles } from "./pages/articles";
 
 // Define the Navigation component
 export const Navigation = () => {
-    return (
-        // Use BrowserRouter to enable routing in your application
-        <Router>
+  return (
+    // Use BrowserRouter to enable routing in your application
+    <Router>
+      <nav className="navbar navbar-expand navbar-light bg-light fixed-bottom">
+        <div className="container-fluid justify-content-center">
+          <div className="navbar-nav justify-content-center">
+            <Link
+              className="nav-item nav-link d-inline mx-2"
+              to="/"
+              title="Home"
+            >
+              <FontAwesomeIcon icon={faHome} size="lg" />
+            </Link>
+            <Link
+              className="nav-item nav-link d-inline mx-2"
+              to="/notification"
+              title="Notifications"
+            >
+              <FontAwesomeIcon icon={faBell} size="lg" />
+            </Link>
+            <Link
+              className="nav-item nav-link d-inline mx-2"
+              to="/profile"
+              title="Profile"
+            >
+              <FontAwesomeIcon icon={faUser} size="lg" />
+            </Link>
+            <Link
+              className="nav-item nav-link d-inline mx-2"
+              to="/settings"
+              title="Settings"
+            >
+              <FontAwesomeIcon icon={faGears} size="lg" />
+            </Link>
+          </div>
+        </div>
+      </nav>
 
-            <nav className="navbar navbar-expand navbar-light bg-light fixed-bottom">
-                <div className="container-fluid justify-content-center">
-                    <div className="navbar-nav justify-content-center">
-                    <Link className="nav-item nav-link d-inline mx-2" to="/" title="Home">
-                        <FontAwesomeIcon icon={faHome} size="lg" />
-                    </Link>
-                    <Link className="nav-item nav-link d-inline mx-2" to="/notification" title="Notifications">
-                        <FontAwesomeIcon icon={faBell} size="lg" />
-                    </Link>
-                    <Link className="nav-item nav-link d-inline mx-2" to="/profile" title="Profile">
-                        <FontAwesomeIcon icon={faUser} size="lg" />
-                    </Link>
-                    <Link className="nav-item nav-link d-inline mx-2" to="/settings" title="Settings">
-                        <FontAwesomeIcon icon={faGears} size="lg" />
-                    </Link>
-                    </div>
-                </div>
-            </nav>
+      {/* Define the Routes for different paths */}
+      <Routes>
+        {/* Route for the home page (path: /) */}
+        <Route path="/" element={<HomePage />} />
 
+        {/* Route for the login page (path: /Login) */}
+        <Route path="/login" element={<LoginPage />} />
 
-            {/* Define the Routes for different paths */}
-            <Routes>
-                {/* Route for the home page (path: /) */}
-                <Route path="/" element={<HomePage />} />
+        {/* Route for the register page (path: /Register) */}
+        <Route path="/register" element={<RegisterPage />} />
 
-                {/* Route for the login page (path: /Login) */}
-                <Route path="/login" element={<LoginPage />} />
+        <Route path="/map" element={<MapsPage />} />
 
-                {/* Route for the register page (path: /Register) */}
-                <Route path="/register" element={<RegisterPage />} />
-                
-                <Route path="/map" element={<MapsPage />} />
+        <Route path="/chatbot" element={<ChatBotPage />} />
 
-                <Route path="/chatbot" element={<ChatBotPage />} />
+        <Route path="/forum" element={<ForumPage />} />
 
-                {/* 
+        <Route path="/contact" element={<ContactPage />} />
+
+        <Route path="/articles" element={<Articles />} />
+
+        {/* 
                   Catch-all Route: 
                   If the path doesn't match any of the above, display the not found page
                 */}
-                <Route path="*" element={<NotFoundPage />} />
-            </Routes>
-        </Router>
-    );
+        <Route path="*" element={<NotFoundPage />} />
+      </Routes>
+    </Router>
+  );
 };
