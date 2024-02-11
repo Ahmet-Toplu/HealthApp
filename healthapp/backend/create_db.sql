@@ -67,5 +67,38 @@ CREATE TABLE admins (
 );
 
 
+-- Forum Table
+CREATE TABLE Forum (
+    forum_id INT PRIMARY KEY AUTO_INCREMENT,
+    user_id INT,
+    title VARCHAR(255) NOT NULL,
+    description TEXT,
+    time_created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id)
+);
+
+-- Comment Table
+CREATE TABLE Comment (
+    comment_id INT PRIMARY KEY AUTO_INCREMENT,
+    forum_id INT,
+    user_id INT,
+    comment_text TEXT,
+    time_created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (forum_id) REFERENCES Forum(forum_id),
+    FOREIGN KEY (user_id) REFERENCES users(id)
+);
+
+-- Article Table
+CREATE TABLE Article (
+    article_id INT PRIMARY KEY AUTO_INCREMENT,
+    user_id INT,
+    link VARCHAR(255) NOT NULL,
+    description TEXT,
+    FOREIGN KEY (user_id) REFERENCES users(id)
+);
+
+
+
+
 CREATE USER 'appuser'@'localhost' IDENTIFIED WITH mysql_native_password BY 'app2027';
  GRANT ALL PRIVILEGES ON HEALTHAPP.* TO 'appuser'@'localhost';
