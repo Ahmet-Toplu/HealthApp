@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react'; // Import useCallback
 import axios from 'axios';
+import '../css/chatbot.css'
 
 export const ContactPage = () => {
     const [location, setLocation] = useState({ lat: null, lng: null });
