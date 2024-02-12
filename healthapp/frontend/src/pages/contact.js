@@ -3,6 +3,7 @@ import axios from 'axios';
 
 export const ContactPage = () => {
     const [location, setLocation] = useState({ lat: null, lng: null });
+    const [contacts, setContacts] = useState([]); // State to store fetched contacts
 
     // Wrap fetchContacts with useCallback
     const fetchContacts = useCallback(() => {
@@ -10,7 +11,7 @@ export const ContactPage = () => {
             axios.get(`http://localhost:8081/api/contact?lat=${location.lat}&lng=${location.lng}`)
               .then(response => {
                   // Process your response here
-                  console.log(response.data);
+                  setContacts(response.data);
               })
               .catch(error => {
                   console.error('Error fetching hospitals:', error);
@@ -35,8 +36,18 @@ export const ContactPage = () => {
 
     return (
         <div className='mx-3 mt-3'>
-            <div style={{ paddingBottom: '88px', height: '100vh', width: '100%' }}>
-                <h1>404 Page Not Found Contacts</h1>
+            <div style={{ paddingBottom: '88px', width: '100%' }}>
+                <h1>Hospital Contacts</h1>
+                {/* Render contacts data */}
+                <div>
+                    {contacts.map((contact, index) => (
+                        <div key={index} style={{ marginBottom: '20px' }}>
+                            <h2>{contact.name}</h2>
+                            {contact.formatted_phone_number && <p>Phone: {contact.formatted_phone_number}</p>}
+                            {contact.website && <p>Website: <a href={contact.website} target="_blank" rel="noopener noreferrer">{contact.website}</a></p>}
+                        </div>
+                    ))}
+                </div>
             </div>
         </div>
     );

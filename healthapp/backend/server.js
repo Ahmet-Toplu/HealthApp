@@ -6,7 +6,6 @@ const axios = require('axios');
 const OpenAI = require('openai');
 require('dotenv').config();
 
-
 const app = express();
 
 app.use(express.json());
@@ -170,7 +169,7 @@ app.get('/api/contact', async (req, res) => {
         );
         const detailsResponses = await Promise.all(detailsPromises);
         const hospitalDetails = detailsResponses.map(response => response.data.result);
-        console.log(hospitalDetails);
+        res.json(hospitalDetails);
     } catch (error) {
       console.error(error);
       res.status(500).send('Server error');
