@@ -12,6 +12,8 @@ import { LoginPage } from "./pages/Login";
 import { RegisterPage } from "./pages/Register";
 import { MapsPage } from "./pages/map";
 import { ChatBotPage } from "./pages/chatbot";
+import { ForumPage } from "./pages/forum";
+import { ContactPage } from "./pages/contact";
 
 // Define the Navigation component
 export const Navigation = () => {
@@ -53,6 +55,10 @@ export const Navigation = () => {
                 <Route path="/map" element={<MapsPage />} />
 
                 <Route path="/chatbot" element={<ChatBotPage />} />
+                
+                <Route path="/forum" element={<ForumPage />} />
+
+                <Route path="/contact" element={<ContactPage />} />
 
                 {/* 
                   Catch-all Route: 

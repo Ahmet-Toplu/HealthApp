@@ -23,23 +23,27 @@ export const ChatBotPage = () => {
     };
 
     return (
-        <div className="chatbot-container">
-            <div className="conversation-view">
-                {conversation.map((messageObj, index) => (
-                    <div key={index} className={`message ${messageObj.sender}`}>
-                        {messageObj.text}
+        <div className='mx-3 mt-3'>
+            <div style={{ paddingBottom: '88px', height: '100vh', width: '100%', display: 'flex', justifyContent: 'center', alignContent: "center" , flexWrap: 'wrap', gap: '20px', alignItems: 'flex-start'}}>
+                <div className="chatbot-container">
+                    <div className="conversation-view">
+                        {conversation.map((messageObj, index) => (
+                            <div key={index} className={`message ${messageObj.sender}`}>
+                                {messageObj.text}
+                            </div>
+                        ))}
                     </div>
-                ))}
-            </div>
-            <div className="message-input">
-                <input
-                    type="text"
-                    value={userMessage}
-                    onChange={(e) => setUserMessage(e.target.value)}
-                    onKeyPress={(e) => e.key === 'Enter' && sendMessage()}
-                    placeholder="Type your message here..."
-                />
-                <button onClick={sendMessage}>Send</button>
+                    <div className="message-input">
+                        <input
+                            type="text"
+                            value={userMessage}
+                            onChange={(e) => setUserMessage(e.target.value)}
+                            onKeyPress={(e) => e.key === 'Enter' && sendMessage()}
+                            placeholder="Type your message here..."
+                        />
+                        <button onClick={sendMessage}>Send</button>
+                    </div>
+                </div>
             </div>
         </div>
     );
