@@ -1,0 +1,22 @@
+{
+    "short_name": "Health App",
+    "name": "Project 1",
+    "icons": [
+      {
+        "src": "example_icon.png",
+        "sizes": "192x192",
+        "type": "image/png"
+      },
+      {
+        "src": "example_icon.png",
+        "sizes": "512x512",
+        "type": "image/png"
+      }
+    ],
+    "start_url": "/",
+    "background_color": "#FFFFFF",
+    "display": "standalone",
+    "scope": "/",
+    "theme_color": "#FFFFFF"
+  }
+  
