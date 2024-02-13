@@ -1,0 +1,46 @@
+/* contact.css */
+
+.contact-container {
+    padding: 20px;
+    background-color: white;
+    overflow-y: auto; 
+    max-height: 850px;
+  }
+  
+  .contact-title {
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+  }
+  
+  .contact-table {
+    width: 100%;
+    border-collapse: collapse;
+    
+  }
+  
+  .contact-table th,
+  .contact-table td {
+    padding: 5px;
+    border: 2px solid #ddd;
+    font-family: 'Times New Roman', Times, serif;
+    width: 350px;
+  }
+  
+  .contact-table th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+  }
+
+  .contact-table a {
+    color: #007bff;
+    text-decoration: none; 
+  }
+  
+  .contact-table a:hover {
+    text-decoration: underline;
+  }
+
+  .contact-table-wrapper {
+    overflow-x: auto;
+}
