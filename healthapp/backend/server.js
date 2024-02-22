@@ -81,7 +81,7 @@ app.post('/login', (req, res) => {
 
 app.post('/register', (req, res) => {
     let sqlQuery = "SELECT CASE WHEN EXISTS (SELECT 1 FROM users WHERE email = ?) THEN 'true' ELSE 'false' END AS result;";
-    let data = [req.body.firstName, req.body.lastName, req.body.email];
+    let data = [req.body.email];
     db.query(sqlQuery, data, async (err, result) => {
         if (err) {
             console.error(err.message);
