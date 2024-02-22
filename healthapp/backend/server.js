@@ -41,7 +41,7 @@ const db = mysql.createConnection({
 })
 
 app.post('/login', (req, res) => {
-    let sqlQuery = "SELECT CASE WHEN EXISTS (SELECT 1 FROM users WHERE username = ? OR email = ?) THEN 'true' ELSE 'false' END AS result;";
+    let sqlQuery = "SELECT CASE WHEN EXISTS (SELECT 1 FROM users WHERE email = ?) THEN 'true' ELSE 'false' END AS result;";
     db.query(sqlQuery, [req.body.username, req.body.email], async (err, result) => {
         if (err) {
             console.error(err.message);
@@ -81,7 +81,7 @@ app.post('/login', (req, res) => {
 
 app.post('/register', (req, res) => {
     let sqlQuery = "SELECT CASE WHEN EXISTS (SELECT 1 FROM users WHERE username = ? OR email = ?) THEN 'true' ELSE 'false' END AS result;";
-    let data = [req.body.email];
+    let data = [req.body.firstName, req.body.lastName, req.body.email];
     db.query(sqlQuery, data, async (err, result) => {
         if (err) {
             console.error(err.message);
@@ -90,7 +90,7 @@ app.post('/register', (req, res) => {
             res.json('User already exists!');
         } else {
             // Insert new user
-            sqlQuery = "INSERT INTO users (first_name, last_name, email, password) VALUES (?, ?, ?,?)";
+            sqlQuery = "INSERT INTO users (username, email, password) VALUES (?, ?, ?)";
             const hash = await bcrypt.hash(req.body.password, 10);
             db.query(sqlQuery, [req.body.firstName, req.body.lastName, req.body.email, hash], (err, result) => {
                 if (err) {
