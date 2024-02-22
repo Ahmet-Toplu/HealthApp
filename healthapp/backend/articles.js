@@ -29,15 +29,20 @@ async function runExample() {
     const articleIds = await searchArticles(searchTerm, maxResults);
     if (articleIds.length > 0) {
       const summaries = await fetchSummaries(articleIds);
-      // Assuming summaries is an object where each key is a PMID and the value is the article summary
-      Object.values(summaries).forEach(article => {
-        if (article) {
-          const title = article.title ?? 'No title available';
-          const pubDate = article.pubdate ?? 'No publication date available';
-          const articleUrl = `https://pubmed.ncbi.nlm.nih.gov/${article.uid}/`;
-          console.log(`Title: ${title}, Published Date: ${pubDate}, URL: ${articleUrl}`);
-        }
-      });
+      if (summaries && typeof summaries === 'object') { // Check if summaries is an object and not undefined or null
+        Object.values(summaries).forEach(article => {
+          if (article && article.uid) {
+            const title = article.title ?? 'No title available';
+            const pubDate = article.pubdate ?? 'No publication date available';
+            const articleUrl = `https://pubmed.ncbi.nlm.nih.gov/${article.uid}/`;
+            console.log(`Title: ${title}, Published Date: ${pubDate}, URL: ${articleUrl}`);
+          } else {
+            console.log("Article information is incomplete.");
+          }
+        });
+      } else {
+        console.log("No article summaries found.");
+      }
     } else {
       console.log("No articles found for the given search term.");
     }
@@ -45,5 +50,6 @@ async function runExample() {
     console.error("An error occurred:", error);
   }
 }
+
 
 runExample();
