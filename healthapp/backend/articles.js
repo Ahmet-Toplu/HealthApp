@@ -70,26 +70,29 @@ function delay(duration) {
 
 // Example usage
 async function runExample() {
-  try {
-    const articleIds = await searchArticles(searchTerm, maxResults);
-    if (articleIds.length > 0) {
-      const summaries = await fetchSummaries(articleIds);
-      // Assuming summaries is an object where each key is a PMID and the value is the article summary
-      Object.values(summaries).forEach(article => {
-        if (article) {
-          const title = article.title ?? 'No title available';
-          const pubDate = article.pubdate ?? 'No publication date available';
-          const articleUrl = `https://pubmed.ncbi.nlm.nih.gov/${article.uid}/`;
-          console.log(`Title: ${title}, Published Date: ${pubDate}, URL: ${articleUrl}`);
-        }
-      });
-    } else {
-      console.log("No articles found for the given search term.");
+  // Your existing setup and loop start
+  for (let condition of medicalConditions) {
+    console.log(`Searching articles for condition: ${condition}`);
+    try {
+      const articleIds = await searchArticles(condition, maxResults);
+      if (articleIds.length > 0) {
+        const summaries = await fetchSummaries(articleIds);
+        Object.values(summaries || {}).forEach(article => {
+          if (article && article.uid) {
+            const title = article.title ?? 'No title available';
+            const pubDate = article.pubdate ?? 'No publication date available';
+            const articleUrl = `https://pubmed.ncbi.nlm.nih.gov/${article.uid}/`;
+            console.log(`Title: ${title}, Published Date: ${pubDate}, URL: ${articleUrl}`);
+          }
+        });
+      } else {
+        console.log(`No articles found for condition: ${condition}.`);
+      }
+    } catch (error) {
+      console.error(`An error occurred while searching for condition: ${condition}`, error);
     }
-  } catch (error) {
-    console.error("An error occurred:", error);
+    await delay(1000);
   }
 }
-
 
 runExample();
