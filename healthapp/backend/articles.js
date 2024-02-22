@@ -1,4 +1,5 @@
 const fetch = require('node-fetch'); // If you're using this in Node.js
+module.exports = { searchArticles, fetchSummaries, runExample };
 
 const searchTerm = 'asthma';
 const maxResults = 5;
@@ -28,7 +29,15 @@ async function runExample() {
     const articleIds = await searchArticles(searchTerm, maxResults);
     if (articleIds.length > 0) {
       const summaries = await fetchSummaries(articleIds);
-      console.log("Fetched article summaries:", summaries);
+      // Assuming summaries is an object where each key is a PMID and the value is the article summary
+      Object.values(summaries).forEach(article => {
+        if (article) {
+          const title = article.title ?? 'No title available';
+          const pubDate = article.pubdate ?? 'No publication date available';
+          const articleUrl = `https://pubmed.ncbi.nlm.nih.gov/${article.uid}/`;
+          console.log(`Title: ${title}, Published Date: ${pubDate}, URL: ${articleUrl}`);
+        }
+      });
     } else {
       console.log("No articles found for the given search term.");
     }

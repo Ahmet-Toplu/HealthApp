@@ -1,3 +1,4 @@
+const punycode = require('punycode');
 const express = require('express');
 const mysql = require('mysql');
 const cors = require('cors');
@@ -5,6 +6,8 @@ const bcrypt = require('bcrypt');
 const axios = require('axios');
 const OpenAI = require('openai');
 require('dotenv').config();
+
+const { runExample } = require('./articles.js');
 
 const app = express();
 
@@ -196,4 +199,5 @@ app.get('/api/get_questions', async (req, res) => {
 
 app.listen(8081, () => {
     console.log("listening on port 8081...");
+    runExample();
 })
