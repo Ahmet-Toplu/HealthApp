@@ -95,7 +95,6 @@ CREATE TABLE Article (
     link VARCHAR(255) NOT NULL,
     title TEXT,
     date DATE
-    
 );
 
 
