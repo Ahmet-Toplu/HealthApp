@@ -9,9 +9,10 @@ CREATE TABLE users (
     id INT AUTO_INCREMENT PRIMARY KEY,
     first_name VARCHAR(50) NOT NULL,
     last_name VARCHAR(50) NOT NULL,
-    date_of_birth DATE NOT NULL,
+    date_of_birth DATE,
     email VARCHAR(100) NOT NULL,
     password VARCHAR(50) NOT NULL,
+    username VARCHAR(50),
     phone VARCHAR(15),
     sex ENUM('Male', 'Female', 'Other'),
     blood_type VARCHAR(5),
@@ -91,10 +92,10 @@ CREATE TABLE Comment (
 -- Article Table
 CREATE TABLE Article (
     article_id INT PRIMARY KEY AUTO_INCREMENT,
-    user_id INT,
     link VARCHAR(255) NOT NULL,
-    description TEXT,
-    FOREIGN KEY (user_id) REFERENCES users(id)
+    title TEXT,
+    date DATE
+    
 );
 
 

@@ -81,7 +81,7 @@ app.post('/login', (req, res) => {
 
 app.post('/register', (req, res) => {
     let sqlQuery = "SELECT CASE WHEN EXISTS (SELECT 1 FROM users WHERE username = ? OR email = ?) THEN 'true' ELSE 'false' END AS result;";
-    let data = [req.body.firstName, req.body.lastName, req.body.email];
+    let data = [req.body.email];
     db.query(sqlQuery, data, async (err, result) => {
         if (err) {
             console.error(err.message);
@@ -90,15 +90,16 @@ app.post('/register', (req, res) => {
             res.json('User already exists!');
         } else {
             // Insert new user
-            sqlQuery = "INSERT INTO users (username, email, password) VALUES (?, ?, ?)";
+            sqlQuery = "INSERT INTO users (first_name, last_name, email, password) VALUES (?, ?, ?,?)";
             const hash = await bcrypt.hash(req.body.password, 10);
-            db.query(sqlQuery, [req.body.username, req.body.email, hash], (err, result) => {
+            db.query(sqlQuery, [req.body.firstName, req.body.lastName, req.body.email, hash], (err, result) => {
                 if (err) {
                     console.error(err.message);
                     res.redirect('/error'); // Redirect or handle error
                 } else {
-                    forumData.username = req.body.username;
-                    res.json(`User added to database. <br> <a href="/">Home Page</a>`);
+                  req.body.firstName,
+                  req.body.lastName
+                    res.json(result);
                 }
             });
         }
