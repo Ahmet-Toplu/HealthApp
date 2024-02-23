@@ -94,6 +94,7 @@ export const MapsPage = () => {
 
   useEffect(() => {
     if (mapRef.current) {
+      console.log(hospitals)
       hospitals.forEach((hospital) => {
         new window.google.maps.Marker({
           position: {
