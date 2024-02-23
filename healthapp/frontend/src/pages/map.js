@@ -1,16 +1,19 @@
-import React, { useState, useEffect, useRef } from 'react';
-import GoogleMapReact from 'google-map-react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { GoogleMap, Marker, InfoWindow, useLoadScript } from '@react-google-maps/api';
 
-const HospitalMarker = ({ text }) => <div style={{ color: 'red' }}>{text}</div>;
-const UserLocationMarker = ({ text }) => <div style={{ color: 'blue' }}>{text}</div>;
+const mapContainerStyle = {
+  height: 'calc(100vh - 100px)',
+  width: '100%',
+};
 
 export const MapsPage = () => {
+  const { isLoaded, loadError } = useLoadScript({
+    googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
+  });
   const [userLocation, setUserLocation] = useState(null);
   const [hospitals, setHospitals] = useState([]);
-  const mapRef = useRef(null);
-  const userLocationMarkerRef = useRef(null);
-  const accuracyCircleRef = useRef(null);
+  const [selectedHospital, setSelectedHospital] = useState(null);
 
   // Simulate fetching hospitals
   const fetchHospitals = (location) => {
@@ -38,40 +41,6 @@ export const MapsPage = () => {
           };
           setUserLocation(pos);
           fetchHospitals(pos);
-
-          if (mapRef.current) {
-            // Update the marker and circle's position on the map
-            if (userLocationMarkerRef.current) {
-              userLocationMarkerRef.current.setPosition(pos);
-              accuracyCircleRef.current.setCenter(pos);
-              accuracyCircleRef.current.setRadius(position.coords.accuracy);
-            } else {
-              // Initialize the marker and circle if they don't exist yet
-              userLocationMarkerRef.current = new window.google.maps.Marker({
-                position: pos,
-                map: mapRef.current,
-                title: 'Your Location',
-                icon: {
-                  path: window.google.maps.SymbolPath.CIRCLE,
-                  scale: 10,
-                  fillColor: "#0000FF",
-                  fillOpacity: 0.4,
-                  strokeWeight: 0.4
-                }
-              });
-
-              accuracyCircleRef.current = new window.google.maps.Circle({
-                strokeColor: "#0000FF",
-                strokeOpacity: 0.5,
-                strokeWeight: 2,
-                fillColor: "#0000FF",
-                fillOpacity: 0.1,
-                map: mapRef.current,
-                center: pos,
-                radius: position.coords.accuracy,
-              });
-            }
-          }
         },
         (err) => {
           console.error(err);
@@ -92,52 +61,46 @@ export const MapsPage = () => {
     };
   }, []);
 
-  useEffect(() => {
-    if (mapRef.current) {
-      console.log(hospitals)
-      hospitals.forEach((hospital) => {
-        new window.google.maps.Marker({
-          position: {
-            lat: hospital.geometry.location.lat,
-            lng: hospital.geometry.location.lng
-          },
-          map: mapRef.current,
-          title: hospital.name,
-        });
-      });
-    }
-  }, [userLocation, hospitals]);
+  if (loadError) return <div>Error loading maps</div>;
+  if (!isLoaded) return <div>Loading Maps</div>;
 
   return (
-    <div className='mx-3 mt-3'>
-      <div style={{ paddingBottom: '88px', height: '100vh', width: '100%' }}>
-        <GoogleMapReact
-          bootstrapURLKeys={{ key: process.env.REACT_APP_GOOGLE_MAPS_API_KEY }}
-          center={userLocation || { lat: 59.95, lng: 30.33 }} // Fallback to a default center if userLocation is null
-          defaultZoom={14}
-          yesIWantToUseGoogleMapApiInternals
-          onGoogleApiLoaded={({ map }) => {
-            mapRef.current = map;
-          }}
-          >
-          
+    <div style={{ width: '100%' }}>
+      <div style={{ padding: '20px', height: 'calc(100vh - 40px)', boxSizing: 'border-box' }}>
+        <GoogleMap
+          mapContainerStyle={mapContainerStyle}
+          center={userLocation || { lat: 59.95, lng: 30.33 }}
+          zoom={14}
+        >
           {userLocation && (
-            <UserLocationMarker
-            lat={userLocation.lat}
-            lng={userLocation.lng}
-            text="Your Location"
+            <Marker
+              position={{ lat: userLocation.lat, lng: userLocation.lng }}
+              label="Your Location"
             />
-            )}
-
+          )}
           {hospitals.map((hospital, index) => (
-            <HospitalMarker
-            key={index}
-            lat={hospital.geometry.location.lat}
-            lng={hospital.geometry.location.lng}
-            text={hospital.name}
+            <Marker
+              key={index}
+              position={{ lat: hospital.geometry.location.lat, lng: hospital.geometry.location.lng }}
+              onClick={() => setSelectedHospital(hospital)}
             />
-            ))}
-        </GoogleMapReact>
+          ))}
+
+          {selectedHospital && (
+            <InfoWindow
+              position={{
+                lat: selectedHospital.geometry.location.lat,
+                lng: selectedHospital.geometry.location.lng,
+              }}
+              onCloseClick={() => setSelectedHospital(null)}
+            >
+              <div>
+                <h2>{selectedHospital.name}</h2>
+                {/* Any additional hospital info here */}
+              </div>
+            </InfoWindow>
+          )}
+        </GoogleMap>
       </div>
     </div>
   );

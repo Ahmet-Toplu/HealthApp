@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import '../css/chatbot.css';
 
 export const ChatBotPage = () => {
     const [userMessage, setUserMessage] = useState('');
