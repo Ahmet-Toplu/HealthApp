@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHome, faBell, faUser, faGears } from '@fortawesome/free-solid-svg-icons';
-
+import { AuthProvider } from './contexts/AuthContext';
 
 // Import your page components
 import { HomePage } from "./pages/Home";
@@ -41,31 +41,33 @@ export const Navigation = () => {
             </nav>
 
 
-            {/* Define the Routes for different paths */}
-            <Routes>
-                {/* Route for the home page (path: /) */}
-                <Route path="/" element={<HomePage />} />
+            <AuthProvider>
+                {/* Define the Routes for different paths */}
+                <Routes>
+                    {/* Route for the home page (path: /) */}
+                    <Route exact path="/" element={<HomePage />} />
 
-                {/* Route for the login page (path: /Login) */}
-                <Route path="/login" element={<LoginPage />} />
+                    {/* Route for the login page (path: /Login) */}
+                    <Route path="/login" element={<LoginPage />} />
 
-                {/* Route for the register page (path: /Register) */}
-                <Route path="/register" element={<RegisterPage />} />
-                
-                <Route path="/map" element={<MapsPage />} />
+                    {/* Route for the register page (path: /Register) */}
+                    <Route path="/register" element={<RegisterPage />} />
+                    
+                    <Route path="/map" element={<MapsPage />} />
 
-                <Route path="/chatbot" element={<ChatBotPage />} />
-                
-                <Route path="/forum" element={<ForumPage />} />
+                    <Route path="/chatbot" element={<ChatBotPage />} />
+                    
+                    <Route path="/forum" element={<ForumPage />} />
 
-                <Route path="/contact" element={<ContactPage />} />
+                    <Route path="/contact" element={<ContactPage />} />
 
-                {/* 
-                  Catch-all Route: 
-                  If the path doesn't match any of the above, display the not found page
-                */}
-                <Route path="*" element={<NotFoundPage />} />
-            </Routes>
+                    {/* 
+                    Catch-all Route: 
+                    If the path doesn't match any of the above, display the not found page
+                    */}
+                    <Route path="*" element={<NotFoundPage />} />
+                </Routes>
+            </AuthProvider>
         </Router>
     );
 };
