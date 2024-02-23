@@ -18,6 +18,23 @@ export const ForumPage = () => {
       .catch(error => console.error("There was an error fetching the questions: ", error));
   }, []);
 
+  const fetchQuestions = () => {
+    setLoading(true);
+    axios.get('http://localhost:8081/api/get_questions')
+      .then(response => {
+        setQuestions(response.data);
+        setLoading(false);
+      })
+      .catch(error => {
+        console.error("There was an error fetching the questions: ", error);
+        setLoading(false);
+      });
+  };
+
+  useEffect(() => {
+    fetchQuestions(); // Call on component mount
+  }, []);
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const questionData = {
@@ -26,11 +43,11 @@ export const ForumPage = () => {
     };
     
     axios.post('http://localhost:8081/api/add_questions', questionData)
-      .then(response => {
+      .then(() => {
         setQuestionTitle('');
         setQuestionDescription('');
         setShowModal(false); // Close the modal on successful submission
-        setQuestions([...questions, response.data]);
+        fetchQuestions(); // Refetch all questions after adding a new one
       })
       .catch(error => console.error("There was an error posting the question: ", error));
   };

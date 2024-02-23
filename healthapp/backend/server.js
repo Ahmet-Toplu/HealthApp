@@ -7,27 +7,12 @@ const axios = require('axios');
 const OpenAI = require('openai');
 require('dotenv').config();
 
-const { runExample } = require('./articles.js');
+// const { runExample } = require('./articles.js');
 
 const app = express();
 
 app.use(express.json());
 app.use(cors());
-
-const questions = [
-    {
-        id: 1,
-        title: "Title 1",
-        description: "Description 1"
-    },
-    {
-        id: 2,
-        title: "Title 2",
-        description: "Description 2"
-    }
-]
-
-let _id = 0;
 
 const openai = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY,
@@ -45,9 +30,8 @@ app.post('/login', (req, res) => {
     db.query(sqlQuery, [req.body.username, req.body.email], async (err, result) => {
         if (err) {
             console.error(err.message);
-            res.redirect('/error'); // Redirect or handle error
         } else if (result[0].result == 'false') {
-            res.redirect('/signup');
+            res.redirect('/register');
         } else {
             sqlQuery = "SELECT password FROM users WHERE username = ?;";
             db.query(sqlQuery, [req.body.username], async (err, result) => {
@@ -180,11 +164,22 @@ app.get('/api/contact', async (req, res) => {
 
 app.post('/api/add_questions', async (req, res) => {
     try {
-        if (_id <= questions[questions.length - 1].id) {
-            _id = questions[questions.length - 1].id + 1;
-        }
-        questions.push({ id: _id, title: req.body.title, description: req.body.description});
-        res.json(questions[questions.length - 1]);
+        let sqlQuery = "INSERT INTO Forum (user_id, title, description) VALUES (?, ?, ?)";
+        let data = [1, req.body.title, req.body.description];
+        db.query(sqlQuery, data, async (err, result) => {
+            if (err) {
+                console.error(err.message);
+            } else {
+                let sqlQuery = "SELECT * FROM Forum";
+                db.query(sqlQuery, async (err, result) => {
+                    if (err) {
+                        console.error(err.message);
+                    } else {
+                        res.json(result);
+                    }
+                })
+            }
+        })
     } catch (error) {
         console.error(error);
     }
@@ -192,7 +187,10 @@ app.post('/api/add_questions', async (req, res) => {
 
 app.get('/api/get_questions', async (req, res) => {
     try {
-        res.json(questions);
+        let sqlQuery = "SELECT * FROM Forum";
+        db.query(sqlQuery, async (err, result) => {
+            res.json(result);
+        })
     } catch (error) {
         res.status(404).send("No Results");
     }
