@@ -19,7 +19,7 @@ export const ArticlesPage = () => {
   };
 
   return (
-    <div className='mx-3 mt-3'>
+    <div style={{ padding: '40px 20px 20px' }}>
       <div className='contact-container'>
         <h1 className='contact-title'>Articles</h1>
         <table className='contact-table'>

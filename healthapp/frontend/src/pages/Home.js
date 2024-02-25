@@ -29,9 +29,9 @@ export const HomePage = () => {
   };
 
   return (
-      <div style={{ paddingBottom: '100px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '20px' }}>
+      <div style={{ padding: '40px 20px 20px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '20px' }}>
         <div className='w-100'>
-          <Card className="mx-3 mt-3" style={{ maxWidth: '1200px', cursor: 'pointer' }} onClick={navigateToMap}>
+          <Card className="mx-3 mt-3" style={{ maxWidth: '100%', cursor: 'pointer' }} onClick={navigateToMap}>
             <Card.Body className="d-flex flex-column justify-content-center align-items-center">
               <Card.Title>Map</Card.Title>
               <Card.Text>

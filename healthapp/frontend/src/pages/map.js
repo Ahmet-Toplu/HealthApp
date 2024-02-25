@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { GoogleMap, Marker, InfoWindow, useLoadScript } from '@capacitor/google-maps';
+import { GoogleMap, Marker, InfoWindow, useLoadScript } from '@react-google-maps/api';
+import { Geolocation } from '@capacitor/geolocation';
 
 const mapContainerStyle = {
-  height: 'calc(100vh - 100px)',
+  height: 'calc(100vh - 120px)',
   width: '100%',
 };
 
@@ -29,44 +30,27 @@ export const MapsPage = () => {
   };
 
   useEffect(() => {
-    let watchId = null;
-
-    if ("geolocation" in navigator) {
-      watchId = navigator.geolocation.watchPosition(
-        (position) => {
-          const pos = {
-            lat: position.coords.latitude,
-            lng: position.coords.longitude,
-            accuracy: position.coords.accuracy,
-          };
-          setUserLocation(pos);
-          fetchHospitals(pos);
-        },
-        (err) => {
-          console.error(err);
-        },
-        {
-          enableHighAccuracy: true,
-          timeout: 10000,
-          maximumAge: 0,
-        }
-      );
-    }
-
-    // Clean up the watchPosition listener when the component is unmounted
-    return () => {
-      if (watchId != null) {
-        navigator.geolocation.clearWatch(watchId);
-      }
+    const getCurrentPosition = async () => {
+      const coordinates = await Geolocation.getCurrentPosition();
+      const pos = {
+        lat: coordinates.coords.latitude,
+        lng: coordinates.coords.longitude,
+        accuracy: coordinates.coords.accuracy,
+      };
+      setUserLocation(pos);
+      fetchHospitals(pos);
     };
+  
+    getCurrentPosition();
   }, []);
+  
 
   if (loadError) return <div>Error loading maps</div>;
   if (!isLoaded) return <div>Loading Maps</div>;
 
   return (
     <div style={{ width: '100%' }}>
-      <div style={{ padding: '20px', height: 'calc(100vh - 40px)', boxSizing: 'border-box' }}>
+      <div style={{ padding: '40px 20px 20px', height: 'calc(100vh - 60px)', boxSizing: 'border-box' }}>
         <GoogleMap
           mapContainerStyle={mapContainerStyle}
           center={userLocation || { lat: 59.95, lng: 30.33 }}

@@ -54,7 +54,7 @@ export const ForumPage = () => {
 
   return (
     <div className='mx-3 mt-3'>
-      <div style={{ paddingBottom: '88px', height: '100vh', width: '100%' }}>
+      <div style={{ padding: '40px 20px 20px', height: '100vh', width: '100%' }}>
         <h1>Health Forum</h1>
         <button onClick={() => setShowModal(true)}>Post a Question</button>
         {loading ? <p>Loading questions...</p> : questions.map(question => (

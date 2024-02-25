@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
+import { Geolocation } from '@capacitor/geolocation'; // Import Geolocation from Capacitor
 import '../css/contact.css'; // Import the CSS file
 
 export const ContactPage = () => {
@@ -19,14 +20,20 @@ export const ContactPage = () => {
     }, [location.lat, location.lng]);
 
     useEffect(() => {
-        const onSuccess = (position) => {
-            setLocation({
-              lat: position.coords.latitude,
-              lng: position.coords.longitude,
-            });
+        const getCurrentLocation = async () => {
+            const permissions = await Geolocation.checkPermissions(); // Check geolocation permissions
+            if (permissions.location === 'granted' || permissions.location === 'prompt') {
+                const position = await Geolocation.getCurrentPosition(); // Use Capacitor to get current position
+                setLocation({
+                    lat: position.coords.latitude,
+                    lng: position.coords.longitude,
+                });
+            } else {
+                console.error('Location permission not granted');
+            }
         };
 
-        navigator.geolocation.getCurrentPosition(onSuccess);
+        getCurrentLocation();
     }, []);
 
     useEffect(() => {
@@ -34,7 +41,7 @@ export const ContactPage = () => {
     }, [fetchContacts]);
 
     return (
-        <div className='mx-3 mt-3'>
+        <div style={{ padding: '40px 20px 20px' }}>
             <div className='contact-container'>
                 <h1 className='contact-title'>Hospital Contacts</h1>
                 <table className='contact-table'>

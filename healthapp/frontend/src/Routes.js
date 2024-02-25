@@ -10,7 +10,7 @@ import { HomePage } from "./pages/Home";
 import { NotFoundPage } from "./pages/NotFound";
 import { LoginPage } from "./pages/Login";
 import { RegisterPage } from "./pages/Register";
-// import { MapsPage } from "./pages/map";
+import { MapsPage } from "./pages/map";
 import { ChatBotPage } from "./pages/chatbot";
 import { ForumPage } from "./pages/forum";
 import { ContactPage } from "./pages/contact";
@@ -54,7 +54,7 @@ export const Navigation = () => {
                     {/* Route for the register page (path: /Register) */}
                     <Route path="/register" element={<RegisterPage />} />
                     
-                    {/* <Route path="/map" element={<MapsPage />} /> */}
+                    <Route path="/map" element={<MapsPage />} />
 
                     <Route path="/chatbot" element={<ChatBotPage />} />
                     
