@@ -14,6 +14,7 @@ import { MapsPage } from "./pages/map";
 import { ChatBotPage } from "./pages/chatbot";
 import { ForumPage } from "./pages/forum";
 import { ContactPage } from "./pages/contact";
+import { ArticlesPage } from "./pages/articles";
 
 // Define the Navigation component
 export const Navigation = () => {
@@ -60,6 +61,8 @@ export const Navigation = () => {
                     <Route path="/forum" element={<ForumPage />} />
 
                     <Route path="/contact" element={<ContactPage />} />
+
+                    <Route path="/articles" element={<ArticlesPage />} />
 
                     {/* 
                     Catch-all Route: 

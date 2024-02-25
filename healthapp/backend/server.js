@@ -186,12 +186,26 @@ app.post('/api/add_questions', async (req, res) => {
 
 app.get('/api/get_questions', async (req, res) => {
     try {
-        let sqlQuery = "SELECT * FROM Forum";
-        db.query(sqlQuery, async (err, result) => {
+        db.query("SELECT * FROM Forum", async (err, result) => {
             res.json(result);
         })
     } catch (error) {
         res.status(404).send("No Results");
+    }
+})
+
+app.get('/api/articles', async (req, res) => {
+    try {
+        db.query("SELECT * FROM Article", async (err, result) => {
+            if (err) {
+                console.error(err);
+            } else {
+                res.json(result);
+            }
+        })
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Internal Server Error' });
     }
 })
 
