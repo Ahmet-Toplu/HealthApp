@@ -1,4 +1,3 @@
-const punycode = require('punycode');
 const express = require('express');
 const mysql = require('mysql');
 const cors = require('cors');
@@ -7,7 +6,7 @@ const axios = require('axios');
 const OpenAI = require('openai');
 require('dotenv').config();
 
-// const { runExample } = require('./articles.js');
+const { runExample } = require('./articles.js');
 
 const app = express();
 
@@ -27,22 +26,22 @@ const db = mysql.createConnection({
 
 app.post('/login', (req, res) => {
     let sqlQuery = "SELECT CASE WHEN EXISTS (SELECT 1 FROM users WHERE email = ?) THEN 'true' ELSE 'false' END AS result;";
-    db.query(sqlQuery, [req.body.username, req.body.email], async (err, result) => {
+    db.query(sqlQuery, [req.body.email], async (err, result) => {
         if (err) {
             console.error(err.message);
         } else if (result[0].result == 'false') {
             res.redirect('/register');
         } else {
-            sqlQuery = "SELECT password FROM users WHERE username = ?;";
-            db.query(sqlQuery, [req.body.username], async (err, result) => {
+            sqlQuery = "SELECT password FROM users WHERE email = ?;";
+            db.query(sqlQuery, [req.body.email], async (err, result) => {
                 if (err) {
                     console.error(err.message);
                     res.redirect('/error'); // Redirect or handle error
                 } else {
                     const isValid = await bcrypt.compare(req.body.password, result[0].password);
                     if (isValid) {
-                        sqlQuery = "SELECT * FROM users WHERE username = ?;";
-                        db.query(sqlQuery, [req.body.username], (err, result) => {
+                        sqlQuery = "SELECT * FROM users WHERE email = ?;";
+                        db.query(sqlQuery, [req.body.email], (err, result) => {
                             if (err) {
                                 console.error(err.message);
                                 res.redirect('/error'); // Redirect or handle error
@@ -196,7 +195,19 @@ app.get('/api/get_questions', async (req, res) => {
     }
 })
 
+const readline = require('readline');
+
+const rl = readline.createInterface({
+  input: process.stdin,
+  output: process.stdout
+});
+
+rl.on('line', (input) => {
+  if (input === 'run') {
+    runExample();
+  }
+});
+
 app.listen(8081, () => {
     console.log("listening on port 8081...");
-    // runExample();
 })

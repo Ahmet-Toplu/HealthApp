@@ -1,5 +1,14 @@
 const fetch = require('node-fetch'); // If you're using this in Node.js
-module.exports = { searchArticles, fetchSummaries, runExample };
+const mysql = require('mysql');
+
+const db = mysql.createConnection({
+  host: "localhost",
+  user: "appuser",
+  password: 'app2027',
+  database: 'HEALTHAPP'
+})
+
+module.exports = { runExample };
 
 const medicalConditions = [
   "Asthma", "Diabetes Mellitus", "Hypertension", "Obesity", "Depression", "Anxiety Disorders",
@@ -25,6 +34,8 @@ const medicalConditions = [
   "Angina Pectoris", "Atrial Fibrillation", "Heart Block", "Cardiomyopathy", "Endocarditis",
   "Myocarditis", "Pericarditis", "Pulmonary Embolism", "Pulmonary Hypertension", "Sarcoidosis"
 ];
+
+const testConditions = ["Asthma"];
 
 const maxResults = 10;
 const baseUrl = 'https://eutils.ncbi.nlm.nih.gov/entrez/eutils/';
@@ -82,7 +93,14 @@ async function runExample() {
             const title = article.title ?? 'No title available';
             const pubDate = article.pubdate ?? 'No publication date available';
             const articleUrl = `https://pubmed.ncbi.nlm.nih.gov/${article.uid}/`;
-            console.log(`Title: ${title}, Published Date: ${pubDate}, URL: ${articleUrl}`);
+            console.log(`\nTitle: ${title}, \nPublished Date: ${pubDate}, \nURL: ${articleUrl}`);
+            let sqlQuery = "INSERT INTO Article (link, title, date) VALUES (?, ?, ?)";
+            let data = [articleUrl, title, pubDate];
+            db.query(sqlQuery, data, async (err, result) => {
+              if (err) {
+                console.error(err);
+              }
+            });
           }
         });
       } else {
@@ -94,5 +112,3 @@ async function runExample() {
     await delay(1000);
   }
 }
-
-runExample();
