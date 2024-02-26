@@ -45,7 +45,19 @@ app.post('/login', (req, res) => {
                                 console.error(err.message);
                                 res.redirect('/error'); // Redirect or handle error
                             } else {
-                                res.json(result);
+                                const adjustedResult = result.map(user => {
+                                    if (user.date_of_birth) {
+                                        // Ensure user.date_of_birth is treated as a UTC string to avoid timezone issues
+                                        let dateOfBirth = new Date(user.date_of_birth);
+                                        // Add one day
+                                        dateOfBirth.setDate(dateOfBirth.getDate() + 1);
+                                        // Convert back to a string format yyyy-mm-dd
+                                        let adjustedDateStr = dateOfBirth.toISOString().split('T')[0];
+                                        user.date_of_birth = adjustedDateStr; // Update the date_of_birth with adjusted date
+                                    }
+                                    return user;
+                                });
+                                res.json(adjustedResult);
                             }
                         });
                     } else {
@@ -75,7 +87,24 @@ app.post('/register', (req, res) => {
                     res.json(err.message);
                 } else {
                     db.query("SELECT * FROM users WHERE email = ?", req.body.email, (err, result) => {
-                        res.json(result);
+                        if (err) {
+                            console.error(err.message);
+                            res.redirect('/error'); // Redirect or handle error
+                        } else {
+                            const adjustedResult = result.map(user => {
+                                if (user.date_of_birth) {
+                                    // Ensure user.date_of_birth is treated as a UTC string to avoid timezone issues
+                                    let dateOfBirth = new Date(user.date_of_birth);
+                                    // Add one day
+                                    dateOfBirth.setDate(dateOfBirth.getDate() + 1);
+                                    // Convert back to a string format yyyy-mm-dd
+                                    let adjustedDateStr = dateOfBirth.toISOString().split('T')[0];
+                                    user.date_of_birth = adjustedDateStr; // Update the date_of_birth with adjusted date
+                                }
+                                return user;
+                            });
+                            res.json(adjustedResult);
+                        }                    
                     })
                 }
             });
@@ -234,6 +263,58 @@ app.post('/api/addNotification/', (req, res) => {
         let data = [req.body.name, req.body.dosage, req.body.dosage_form, req.body.frequency, req.body.userId]
         db.query("INSERT INTO medications (name, dosage, dosage_form, frequency, user_id) VALUES (?, ?, ?, ?, ?);", data, (err, result) => {
             res.json("added")
+        })
+    } catch (error) {
+        console.error(error);
+    }
+})
+
+app.post('/api/updateUser/', (req, res) => {
+    try {
+        const userId = req.body.userId;
+        const { username, first_name, last_name, date_of_birth, email, phone, sex, blood_type, skin_type, weight, height, address } = req.body;
+        const query = `
+            UPDATE users
+            SET 
+                username = ?, 
+                first_name = ?, 
+                last_name = ?, 
+                date_of_birth = ?, 
+                email = ?, 
+                phone = ?, 
+                sex = ?, 
+                blood_type = ?, 
+                skin_type = ?, 
+                weight = ?, 
+                height = ?, 
+                address = ?
+            WHERE 
+                id = ?;
+        `;
+        db.query(query, [username, first_name, last_name, date_of_birth, email, phone, sex, blood_type, skin_type, weight, height, address, userId], (err, result) => {
+            if (err) {
+                console.error(err);
+            } else {
+                db.query("SELECT * FROM users WHERE id = ?;", [userId], (err, result) => {
+                    if (err) {
+                        console.error(err);
+                    } else {
+                        const adjustedResult = result.map(user => {
+                            if (user.date_of_birth) {
+                                // Ensure user.date_of_birth is treated as a UTC string to avoid timezone issues
+                                let dateOfBirth = new Date(user.date_of_birth);
+                                // Add one day
+                                dateOfBirth.setDate(dateOfBirth.getDate() + 1);
+                                // Convert back to a string format yyyy-mm-dd
+                                let adjustedDateStr = dateOfBirth.toISOString().split('T')[0];
+                                user.date_of_birth = adjustedDateStr; // Update the date_of_birth with adjusted date
+                            }
+                            return user;
+                        });
+                        res.json(adjustedResult);
+                    }
+                })
+            }
         })
     } catch (error) {
         console.error(error);
