@@ -9,6 +9,7 @@
     "@capacitor/geolocation": "^5.0.7",
     "@capacitor/google-maps": "^5.4.1",
     "@capacitor/ios": "^5.7.0",
+    "@capacitor/local-notifications": "^5.0.7",
     "@capacitor/preferences": "^5.0.7",
     "@fortawesome/fontawesome-svg-core": "^6.5.1",
     "@fortawesome/free-solid-svg-icons": "^6.5.1",

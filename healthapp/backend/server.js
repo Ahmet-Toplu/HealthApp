@@ -65,7 +65,7 @@ app.post('/register', (req, res) => {
             console.error(err.message);
             res.json(err.message)
         } else if (result[0].result == 'true') {
-            res.json('User already exists!');
+            res.json('user already exists');
         } else {
             // Insert new user
             sqlQuery = "INSERT INTO users (first_name, last_name, email, password) VALUES (?, ?, ?,?)";
@@ -74,8 +74,8 @@ app.post('/register', (req, res) => {
                 if (err) {
                     res.json(err.message);
                 } else {
-                    db.query("SELECT id FROM users WHERE email = ?", req.body.email, (err, result) => {
-                        res.json(result[0].id);
+                    db.query("SELECT * FROM users WHERE email = ?", req.body.email, (err, result) => {
+                        res.json(result);
                     })
                 }
             });
@@ -154,16 +154,17 @@ app.get('/api/contact', async (req, res) => {
     }
 });
 
-app.post('/api/add_questions', async (req, res) => {
+app.post('/api/add_questions', (req, res) => {
     try {
         let sqlQuery = "INSERT INTO Forum (user_id, title, description) VALUES (?, ?, ?)";
-        let data = [1, req.body.title, req.body.description];
-        db.query(sqlQuery, data, async (err, result) => {
+        let data = [req.body.user_id, req.body.title, req.body.description];
+        console.log(req.body.user_id)
+        db.query(sqlQuery, data, (err, result) => {
             if (err) {
                 console.error(err.message);
             } else {
                 let sqlQuery = "SELECT * FROM Forum";
-                db.query(sqlQuery, async (err, result) => {
+                db.query(sqlQuery, (err, result) => {
                     if (err) {
                         console.error(err.message);
                     } else {
@@ -177,9 +178,9 @@ app.post('/api/add_questions', async (req, res) => {
     }
 })
 
-app.get('/api/get_questions', async (req, res) => {
+app.get('/api/get_questions', (req, res) => {
     try {
-        db.query("SELECT * FROM Forum", async (err, result) => {
+        db.query("SELECT * FROM Forum", (err, result) => {
             res.json(result);
         })
     } catch (error) {
@@ -187,9 +188,9 @@ app.get('/api/get_questions', async (req, res) => {
     }
 })
 
-app.get('/api/articles', async (req, res) => {
+app.get('/api/articles', (req, res) => {
     try {
-        db.query("SELECT * FROM Article", async (err, result) => {
+        db.query("SELECT * FROM Article", (err, result) => {
             if (err) {
                 console.error(err);
             } else {
@@ -202,7 +203,24 @@ app.get('/api/articles', async (req, res) => {
     }
 })
 
+app.post('/api/notifications', (req, res) => {
+    try {
+        const { userId } = req.body;
+        db.query("SELECT * FROM medications WHERE user_id = ?;", [userId], (err, result) => {
+            if (err) {
+                console.error(err);
+            } else {
+                console.log(result);
+                res.json(result);
+            }
+        })
+    } catch (error) {
+        console.error(error)
+    }
+})
+
 const readline = require('readline');
+const { callbackify } = require('util');
 
 const rl = readline.createInterface({
   input: process.stdin,

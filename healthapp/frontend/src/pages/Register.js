@@ -24,11 +24,15 @@ export const RegisterPage = () => {
         if (res.data === 'user already exists') {
           setErrorMessage('User already exists. Please try another email.');
         } else {
-          // Assuming the authToken is in res.data.authToken
-          await Preferences.set({
-            key: 'authToken',
-            value: res.data
-          });
+          let userInfo = res.data[0];
+          for (const key in userInfo) {
+            if (userInfo.hasOwnProperty(key)) {
+              await Preferences.set({
+                  key: key,
+                  value: JSON.stringify(userInfo[key])
+                });
+            }
+          }
           navigate('/profile'); // Redirect to the profile page
         }
       })

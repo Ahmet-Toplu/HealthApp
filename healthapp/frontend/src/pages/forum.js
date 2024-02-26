@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { Preferences } from '@capacitor/preferences';
 
 export const ForumPage = () => {
   const [questions, setQuestions] = useState([]);
@@ -7,6 +8,18 @@ export const ForumPage = () => {
   const [questionTitle, setQuestionTitle] = useState('');
   const [questionDescription, setQuestionDescription] = useState('');
   const [loading, setLoading] = useState(false);
+  const [userId, setUserId] = useState('');
+
+  useEffect(() => {
+    const fetchId = async () => {
+        const { value } = await Preferences.get({ key: 'id' });
+        if (value) {
+            setUserId(value);
+        }
+    };
+
+    fetchId();
+}, []);
 
   useEffect(() => {
     setLoading(true);
@@ -38,6 +51,7 @@ export const ForumPage = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
     const questionData = {
+      user_id: userId,
       title: questionTitle,
       description: questionDescription,
     };
@@ -64,7 +78,7 @@ export const ForumPage = () => {
           </div>
         ))}
         {showModal && (
-          <div style={{ position: 'fixed', top: '20%', left: '25%', backgroundColor: 'white', padding: '20px', borderRadius: '10px', zIndex: 100 }}>
+          <div style={{ padding: '40px 20px 20px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '20px', backgroundColor: 'white', borderRadius: '10px', zIndex: 100 }}>
             <form onSubmit={handleSubmit}>
               <div>
                 <label>Title</label>
