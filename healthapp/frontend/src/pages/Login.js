@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
 import 'bootstrap/dist/css/bootstrap.min.css'; // Import Bootstrap CSS
 
 export const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+
+  const navigate = useNavigate(); // Initialize useNavigate hook
 
   useEffect(() => {
     document.title = 'Login Page';
@@ -13,7 +16,7 @@ export const LoginPage = () => {
   function handleSubmit(event) {
     event.preventDefault();
     axios.post('http://localhost:8081/login', { email, password })
-      .then(res => console.log(res))
+      .then(res => console.log(res.data))
       .catch(err => console.log(err));
   }
 

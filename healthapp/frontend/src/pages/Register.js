@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
+import { Preferences } from '@capacitor/preferences'; // Import Preferences for storage
 import 'bootstrap/dist/css/bootstrap.min.css'; // Ensure Bootstrap CSS is imported
 
 export const RegisterPage = () => {
@@ -7,6 +9,9 @@ export const RegisterPage = () => {
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [errorMessage, setErrorMessage] = useState(''); // Added state for error message
+
+  const navigate = useNavigate(); // Initialize useNavigate hook
 
   useEffect(() => {
     document.title = 'Register Page';
@@ -15,8 +20,22 @@ export const RegisterPage = () => {
   function handleSubmit(event) {
     event.preventDefault();
     axios.post('http://localhost:8081/register', { firstName, lastName, email, password })
-      .then(res => console.log(res))
-      .catch(err => console.log(err));
+      .then(async (res) => {
+        if (res.data === 'user already exists') {
+          setErrorMessage('User already exists. Please try another email.');
+        } else {
+          // Assuming the authToken is in res.data.authToken
+          await Preferences.set({
+            key: 'authToken',
+            value: res.data
+          });
+          navigate('/profile'); // Redirect to the profile page
+        }
+      })
+      .catch(err => {
+        console.log(err);
+        setErrorMessage('An error occurred. Please try again later.');
+      });
   }
 
   return (
@@ -68,6 +87,7 @@ export const RegisterPage = () => {
             <button type="submit" className="btn btn-primary w-100">
               Register
             </button>
+            {errorMessage && <div className="alert alert-danger mt-3">{errorMessage}</div>}
           </form>
         </div>
       </div>

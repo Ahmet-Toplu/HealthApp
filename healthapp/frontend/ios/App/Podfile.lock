@@ -8,6 +8,8 @@ PODS:
     - Capacitor
     - Google-Maps-iOS-Utils (~> 4.1)
     - GoogleMaps (~> 7.3)
+  - CapacitorPreferences (5.0.7):
+    - Capacitor
   - Google-Maps-iOS-Utils (4.2.2):
     - Google-Maps-iOS-Utils/Clustering (= 4.2.2)
     - Google-Maps-iOS-Utils/Geometry (= 4.2.2)
@@ -38,6 +40,7 @@ DEPENDENCIES:
   - "CapacitorCordova (from `../../node_modules/@capacitor/ios`)"
   - "CapacitorGeolocation (from `../../node_modules/@capacitor/geolocation`)"
   - "CapacitorGoogleMaps (from `../../node_modules/@capacitor/google-maps`)"
+  - "CapacitorPreferences (from `../../node_modules/@capacitor/preferences`)"
 
 SPEC REPOS:
   trunk:
@@ -53,15 +56,18 @@ EXTERNAL SOURCES:
     :path: "../../node_modules/@capacitor/geolocation"
   CapacitorGoogleMaps:
     :path: "../../node_modules/@capacitor/google-maps"
+  CapacitorPreferences:
+    :path: "../../node_modules/@capacitor/preferences"
 
 SPEC CHECKSUMS:
   Capacitor: fc155ee2ee45a2093d716f13cf5aa5a865e2d85a
   CapacitorCordova: e825fce1a2e14e4b5730641c7e098dccf74397b7
   CapacitorGeolocation: 918a292459542bcce98433f9e7c7909f8c72838a
   CapacitorGoogleMaps: 7764613bb8eab28f290c1ca76b6ff4ee32d3c50f
+  CapacitorPreferences: 77ac427e98db83bace772455f8ba447430382c4c
   Google-Maps-iOS-Utils: f77eab4c4326d7e6a277f8e23a0232402731913a
   GoogleMaps: 032f676450ba0779bd8ce16840690915f84e57ac
 
-PODFILE CHECKSUM: 40b2da3d36a0505986b74af4f49e297bad58270a
+PODFILE CHECKSUM: aa6368b270e74c47d8fb92d12ad2306c73e0e432
 
 COCOAPODS: 1.15.2

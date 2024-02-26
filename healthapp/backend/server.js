@@ -36,7 +36,6 @@ app.post('/login', (req, res) => {
             db.query(sqlQuery, [req.body.email], async (err, result) => {
                 if (err) {
                     console.error(err.message);
-                    res.redirect('/error'); // Redirect or handle error
                 } else {
                     const isValid = await bcrypt.compare(req.body.password, result[0].password);
                     if (isValid) {
@@ -46,11 +45,7 @@ app.post('/login', (req, res) => {
                                 console.error(err.message);
                                 res.redirect('/error'); // Redirect or handle error
                             } else {
-                                const user = result[0];
-                                forumData.username = user.username;
-                                forumData.userID = user.id;
-                                forumData.password = user.password;
-                                res.redirect('/index');
+                                res.json(result);
                             }
                         });
                     } else {
@@ -68,7 +63,7 @@ app.post('/register', (req, res) => {
     db.query(sqlQuery, data, async (err, result) => {
         if (err) {
             console.error(err.message);
-            res.redirect('/error'); // Redirect or handle error
+            res.json(err.message)
         } else if (result[0].result == 'true') {
             res.json('User already exists!');
         } else {
@@ -77,17 +72,15 @@ app.post('/register', (req, res) => {
             const hash = await bcrypt.hash(req.body.password, 10);
             db.query(sqlQuery, [req.body.firstName, req.body.lastName, req.body.email, hash], (err, result) => {
                 if (err) {
-                    console.error(err.message);
-                    res.redirect('/error'); // Redirect or handle error
+                    res.json(err.message);
                 } else {
-                  req.body.firstName,
-                  req.body.lastName
-                    res.json(result);
+                    db.query("SELECT id FROM users WHERE email = ?", req.body.email, (err, result) => {
+                        res.json(result[0].id);
+                    })
                 }
             });
         }
     });
-    console.log(req.body.firstName, req.body.lastName, req.body.email, req.body.password,)
 })
 
 app.post('/chatbot', async (req, res) => {
