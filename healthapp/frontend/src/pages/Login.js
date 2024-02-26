@@ -22,7 +22,10 @@ export const LoginPage = () => {
     .then(async (res) => {
       if (res.data === 'user already exists') {
         setErrorMessage('User already exists. Please try another email.');
-      } else {
+      }else if (res.data === 'Email does not exist!') {
+        setErrorMessage('Email does not exist!')
+      }
+       else {
         let userInfo = res.data[0];
         for (const key in userInfo) {
           if (userInfo.hasOwnProperty(key)) {

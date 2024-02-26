@@ -30,7 +30,7 @@ app.post('/login', (req, res) => {
         if (err) {
             console.error(err.message);
         } else if (result[0].result == 'false') {
-            res.redirect('/register');
+            res.json("Email does not exist!")
         } else {
             sqlQuery = "SELECT password FROM users WHERE email = ?;";
             db.query(sqlQuery, [req.body.email], async (err, result) => {
