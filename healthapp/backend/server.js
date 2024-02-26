@@ -61,7 +61,7 @@ app.post('/login', (req, res) => {
                             }
                         });
                     } else {
-                        res.redirect('/signup');
+                        res.json("incorrect pasword")
                     }
                 }
             });

@@ -24,6 +24,8 @@ export const LoginPage = () => {
         setErrorMessage('User already exists. Please try another email.');
       }else if (res.data === 'Email does not exist!') {
         setErrorMessage('Email does not exist!')
+      } else if (res.data === 'incorrect pasword') {
+        setErrorMessage('incorrect pasword')
       }
        else {
         let userInfo = res.data[0];
