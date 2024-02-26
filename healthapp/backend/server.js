@@ -158,7 +158,6 @@ app.post('/api/add_questions', (req, res) => {
     try {
         let sqlQuery = "INSERT INTO Forum (user_id, title, description) VALUES (?, ?, ?)";
         let data = [req.body.user_id, req.body.title, req.body.description];
-        console.log(req.body.user_id)
         db.query(sqlQuery, data, (err, result) => {
             if (err) {
                 console.error(err.message);
@@ -210,12 +209,34 @@ app.post('/api/notifications', (req, res) => {
             if (err) {
                 console.error(err);
             } else {
-                console.log(result);
                 res.json(result);
             }
         })
     } catch (error) {
         console.error(error)
+    }
+})
+
+app.delete('/api/notifications/:id', (req, res) => {
+    try {
+        const notificationId = req.params.id;
+        db.query("DELETE FROM medications WHERE id = ?;", [notificationId], (err, result) => {
+            res.status(200).json({ message: `Notification with ID ${notificationId} deleted successfully.` });
+        })
+    } catch (error) {
+        console.error(error);
+    }
+
+});
+
+app.post('/api/addNotification/', (req, res) => {
+    try {
+        let data = [req.body.name, req.body.dosage, req.body.dosage_form, req.body.frequency, req.body.userId]
+        db.query("INSERT INTO medications (name, dosage, dosage_form, frequency, user_id) VALUES (?, ?, ?, ?, ?);", data, (err, result) => {
+            res.json("added")
+        })
+    } catch (error) {
+        console.error(error);
     }
 })
 
