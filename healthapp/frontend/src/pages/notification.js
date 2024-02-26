@@ -5,6 +5,7 @@ import { Preferences } from '@capacitor/preferences';
 export const NotificationPage = () => {
     const [userId, setUserId] = useState('');
     const [scheduledNotifications, setScheduledNotifications] = useState([]);
+    const [notificationsEnabled, setNotificationsEnabled] = useState(true); // New state for notifications preference
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [newNotification, setNewNotification] = useState({
         name: '',
@@ -18,14 +19,18 @@ export const NotificationPage = () => {
     }, []);
 
     useEffect(() => {
-        const fetchUserId = async () => {
+        const fetchSettings = async () => {
             const { value } = await Preferences.get({ key: 'id' });
             if (value) {
                 setUserId(value);
             }
+
+            // Fetch and set the notifications enabled preference
+            const notificationsPref = await Preferences.get({ key: 'notificationsEnabled' });
+            setNotificationsEnabled(notificationsPref.value !== 'false'); // false if the setting is 'false', true otherwise
         };
 
-        fetchUserId();
+        fetchSettings();
     }, []);
 
     const fetchAndScheduleNotifications = useCallback(async () => {
@@ -57,29 +62,47 @@ export const NotificationPage = () => {
     }, [userId, fetchAndScheduleNotifications]);
 
     const scheduleNotifications = async (medications) => {
-        const notificationsToSchedule = medications.map((item) => ({
-            title: `Time for your medicine: ${item.name}`,
-            body: `Dosage: ${item.dosage} ${item.dosage_form}, Frequency: ${item.frequency} times a day`,
-            id: item.id,
-            schedule: { at: new Date(new Date().getTime() + 24 * 60 * 60 * 1000) }, // Schedule for the next day
-            sound: 'notification_sound.wav',
-        }));
-
+        // Fetch preferences for notifications and sound
+        const { value: notificationsEnabled } = await Preferences.get({ key: 'notificationsEnabled' });
+        const { value: soundEnabled } = await Preferences.get({ key: 'soundEnabled' });
+    
+        // Check if notifications are enabled before proceeding
+        if (notificationsEnabled === 'false') {
+            return;
+        }
+    
+        const notificationsToSchedule = medications.map((item) => {
+            const notification = {
+                title: `Time for your medicine: ${item.name}`,
+                body: `Dosage: ${item.dosage} ${item.dosage_form}, Frequency: ${item.frequency} times a day`,
+                id: item.id,
+                schedule: { at: new Date(new Date().getTime() + 24 * 60 * 60 * 1000) }, // Schedule for the next day
+            };
+    
+            // Include sound only if enabled
+            if (soundEnabled === 'true') {
+                notification.sound = 'notification_sound.wav';
+            }
+    
+            return notification;
+        });
+    
         if (notificationsToSchedule.length > 0) {
             await LocalNotifications.schedule({ notifications: notificationsToSchedule });
-
+    
             setScheduledNotifications(notificationsToSchedule.map(notification => ({
                 id: notification.id,
                 title: notification.title,
                 frequency: notification.body
             })));
-
+    
             await Preferences.set({
                 key: 'scheduledNotifications',
                 value: JSON.stringify(notificationsToSchedule),
             });
         }
     };
+    
 
 
     const deleteNotification = async (notificationId) => {
@@ -171,7 +194,11 @@ export const NotificationPage = () => {
                         ))}
                     </ul>
                 ) : (
-                    <p>No notifications scheduled yet.</p>
+                    notificationsEnabled ? (
+                        <p>No notifications scheduled yet.</p>
+                    ) : (
+                        <p>Notifications are turned off.</p>
+                    )
                 )}
                 {isModalOpen && (
                     <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', background: 'white', padding: '20px', zIndex: 100 }}>
