@@ -6,7 +6,7 @@ const config: CapacitorConfig = {
   webDir: 'build',
   bundledWebRuntime: false,
   server: {
-    url: 'http://192.168.1.168:3000',
+    url: 'http://www.doc.gold.ac.uk/usr/701:3000',
     cleartext: true
   }
 };
