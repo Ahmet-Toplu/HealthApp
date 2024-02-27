@@ -9,7 +9,7 @@ export const ContactPage = () => {
 
     const fetchContacts = useCallback(() => {
         if (location.lat && location.lng) {
-            axios.get(`http://localhost:8081/api/contact?lat=${location.lat}&lng=${location.lng}`)
+            axios.get(`http://192.168.1.168:8081/api/contact?lat=${location.lat}&lng=${location.lng}`)
               .then(response => {
                   setContacts(response.data);
               })

@@ -20,7 +20,7 @@ export const MapsPage = () => {
   const fetchHospitals = (location) => {
     const { lat, lng } = location;
     // Replace with your actual fetch logic
-    axios.get(`http://localhost:8081/api/hospitals?lat=${lat}&lng=${lng}`)
+    axios.get(`http://192.168.1.168:8081/api/hospitals?lat=${lat}&lng=${lng}`)
       .then(response => {
         setHospitals(response.data.results);
       })

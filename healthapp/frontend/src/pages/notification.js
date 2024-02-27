@@ -37,7 +37,7 @@ export const NotificationPage = () => {
         if (!userId) return;
 
         try {
-            const response = await fetch('http://localhost:8081/api/notifications', {
+            const response = await fetch('http://192.168.1.168:8081/api/notifications', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

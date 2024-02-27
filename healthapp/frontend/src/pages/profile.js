@@ -71,7 +71,7 @@ export const ProfilePage = () => {
                 ...userInput, 
                 userId: userId
             }
-            const response = await fetch('http://localhost:8081/api/updateUser', {
+            const response = await fetch('http://192.168.1.168:8081/api/updateUser', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

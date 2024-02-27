@@ -24,6 +24,13 @@ const db = mysql.createConnection({
     database: 'HEALTHAPP'
 })
 
+app.use((req, res, next) => {
+    console.log(`${req.method} ${req.url}`);
+    console.log('Headers:', req.headers);
+    console.log('Body:', req.body);
+    next();
+  });
+
 app.post('/login', (req, res) => {
     let sqlQuery = "SELECT CASE WHEN EXISTS (SELECT 1 FROM users WHERE email = ?) THEN 'true' ELSE 'false' END AS result;";
     db.query(sqlQuery, [req.body.email], async (err, result) => {

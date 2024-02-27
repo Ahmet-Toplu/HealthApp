@@ -18,7 +18,7 @@ export const LoginPage = () => {
 
   function handleSubmit(event) {
     event.preventDefault();
-    axios.post('http://localhost:8081/login', { email, password })
+    axios.post('http://192.168.1.168:8081/login', { email, password })
     .then(async (res) => {
       if (res.data === 'user already exists') {
         setErrorMessage('User already exists. Please try another email.');

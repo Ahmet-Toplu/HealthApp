@@ -14,7 +14,7 @@ export const ChatBotPage = () => {
         setUserMessage('');
 
         try {
-            const response = await axios.post('http://localhost:8081/chatbot', { message: userMessage });
+            const response = await axios.post('http://192.168.1.168:8081/chatbot', { message: userMessage });
             const botReply = response.data.reply;
             setConversation([...newConversation, { text: botReply, sender: 'bot' }]);
         } catch (error) {

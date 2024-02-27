@@ -56,7 +56,7 @@ export const ForumPage = () => {
       description: questionDescription,
     };
     
-    axios.post('http://localhost:8081/api/add_questions', questionData)
+    axios.post('http://192.168.1.168:8081/api/add_questions', questionData)
       .then(() => {
         setQuestionTitle('');
         setQuestionDescription('');
