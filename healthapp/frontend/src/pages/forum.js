@@ -23,7 +23,7 @@ export const ForumPage = () => {
 
   useEffect(() => {
     setLoading(true);
-    axios.get('http://localhost:8081/api/get_questions')
+    axios.get('http://www.doc.gold.ac.uk/usr/701:8081/api/get_questions')
       .then(response => {
         setQuestions(response.data);
         setLoading(false);

@@ -19,7 +19,7 @@ export const RegisterPage = () => {
 
   function handleSubmit(event) {
     event.preventDefault();
-    axios.post('http://192.168.1.168:8081/register', { firstName, lastName, email, password })
+    axios.post('http://www.doc.gold.ac.uk/usr/701:8081/register', { firstName, lastName, email, password })
       .then(async (res) => {
         if (res.data === 'user already exists') {
           setErrorMessage('User already exists. Please try another email.');

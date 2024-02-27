@@ -16,11 +16,32 @@ export const MapsPage = () => {
   const [hospitals, setHospitals] = useState([]);
   const [selectedHospital, setSelectedHospital] = useState(null);
 
+  async function checkPermissionsAndGetLocation() {
+    const permissionStatus = await Geolocation.checkPermissions();
+  
+    if (permissionStatus.location !== 'granted') {
+      const permissionRequest = await Geolocation.requestPermissions();
+      if (permissionRequest.location !== 'granted') {
+        console.error('Location permission not granted');
+        return;
+      }
+    }
+  
+    try {
+      const coordinates = await Geolocation.getCurrentPosition();
+      console.log('Current position:', coordinates);
+    } catch (e) {
+      console.error('Error getting location:', e);
+    }
+  }
+
+  checkPermissionsAndGetLocation();
+
   // Simulate fetching hospitals
   const fetchHospitals = (location) => {
     const { lat, lng } = location;
     // Replace with your actual fetch logic
-    axios.get(`http://192.168.1.168:8081/api/hospitals?lat=${lat}&lng=${lng}`)
+    axios.get(`http://www.doc.gold.ac.uk/usr/701:8081/api/hospitals?lat=${lat}&lng=${lng}`)
       .then(response => {
         setHospitals(response.data.results);
       })
