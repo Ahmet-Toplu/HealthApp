@@ -11,7 +11,7 @@ CREATE TABLE users (
     last_name VARCHAR(50) NOT NULL,
     date_of_birth DATE,
     email VARCHAR(100) NOT NULL,
-    password VARCHAR(50) NOT NULL,
+    password VARCHAR(250) NOT NULL,
     username VARCHAR(50),
     phone VARCHAR(15),
     sex ENUM('Male', 'Female', 'Other'),
