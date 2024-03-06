@@ -37,7 +37,7 @@ const medicalConditions = [
 
 const testConditions = ["Asthma"];
 
-const maxResults = 10;
+const maxResults = 1;
 const baseUrl = 'https://eutils.ncbi.nlm.nih.gov/entrez/eutils/';
 
 // Function to search articles
