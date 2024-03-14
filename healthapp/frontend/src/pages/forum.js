@@ -23,7 +23,7 @@ export const ForumPage = () => {
 
   useEffect(() => {
     setLoading(true);
-    axios.get('http://www.doc.gold.ac.uk/usr/701:8081/api/get_questions')
+    axios.get('localhost:8081/api/get_questions')
       .then(response => {
         setQuestions(response.data);
         setLoading(false);
@@ -56,7 +56,7 @@ export const ForumPage = () => {
       description: questionDescription,
     };
     
-    axios.post('http://192.168.1.168:8081/api/add_questions', questionData)
+    axios.post('localhost:8081/api/add_questions', questionData)
       .then(() => {
         setQuestionTitle('');
         setQuestionDescription('');

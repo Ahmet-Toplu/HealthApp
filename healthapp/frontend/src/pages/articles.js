@@ -10,7 +10,7 @@ export const ArticlesPage = () => {
 
   const fetchArticles = async () => {
     try {
-      const response = await fetch('http://www.doc.gold.ac.uk/usr/701:8081/api/articles'); // Replace with your server's API endpoint
+      const response = await fetch('localhost:8081/api/articles'); // Replace with your server's API endpoint
       const data = await response.json();
       setArticles(data);
     } catch (error) {
